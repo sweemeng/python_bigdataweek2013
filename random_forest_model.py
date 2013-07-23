@@ -1,23 +1,33 @@
 import datas
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import cross_validation
+from pandas import Series, DataFrame
 
 def main():
     training = datas.training
+    training = training.drop(["SibSp"], axis=1)
     testing  = datas.testing
-    random_forest = RandomForestClassifier(n_estimators=100)
-    random_forest = random_forest.fit(training.ix[:,'pclass':],training.ix[:,'survived'])
+    testing  = testing.drop(["SibSp"], axis=1)
+    random_forest = RandomForestClassifier(n_estimators=100, min_samples_split=1, max_depth=None, min_samples_leaf=5)
+    random_forest = random_forest.fit(training.ix[:,'Pclass':],training.ix[:,'Survived'])
     result = random_forest.predict(testing)
-    print result
+    return result
 
 def test():
     training = datas.training
-    random_forest = RandomForestClassifier(n_estimators=100)
-    training = training.drop(['embarked','sibsp','fare' ],axis=1)
+    training = training.drop(["SibSp"], axis=1)
+    random_forest = RandomForestClassifier(n_estimators=100, min_samples_split=1, max_depth=None, min_samples_leaf=5)
     kfold    = cross_validation.KFold(len(training), 3)
-    result   = cross_validation.cross_val_score(random_forest, training.ix[:,'pclass':], training.ix[:,'survived'], cv=kfold,n_jobs=1)
+    result   = cross_validation.cross_val_score(random_forest, training.ix[:,'Pclass':], training.ix[:,'Survived'], cv=kfold,n_jobs=1)
     print result
 
 
 if __name__ == "__main__":
-    test()
+    result = main()
+
+    print result
+    testing = DataFrame.from_csv("data/test.csv", index_col="PassengerId", parse_dates=False)
+    print testing
+    temp = DataFrame({"Survived":Series(result, index=testing.index)})
+    temp.to_csv("result.csv")
+

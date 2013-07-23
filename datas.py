@@ -1,8 +1,8 @@
 import pandas
 
 
-training = pandas.read_csv("data/train.csv", index_col="PassengerId")
-testing  = pandas.read_csv("data/test.csv", index_col="PassengerId")
+training = pandas.read_csv("data/train.csv", index_col="PassengerId", parse_dates=False)
+testing  = pandas.read_csv("data/test.csv", index_col="PassengerId", parse_dates=False)
 
 def clean_data(data_frame):
     data_frame = data_frame.drop(
