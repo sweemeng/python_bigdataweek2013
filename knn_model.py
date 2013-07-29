@@ -17,8 +17,8 @@ def main():
     testing = testing.drop(['Embarked'],axis=1)
 
     knn = KNeighborsClassifier(15,weights="uniform")
-    knn.fit(pca.reduced_data(training), training.ix[:,'Survived'])
-    result = knn.predict(pca.reduced_data(testing))
+    knn.fit(pca.reduced_data(training,4), training.ix[:,'Survived'])
+    result = knn.predict(pca.reduced_data(testing,4))
     datas.write_data(result)
 
 

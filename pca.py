@@ -11,11 +11,11 @@ def main():
     reduced = pca.fit_transform(training.ix[:,'Pclass':])
     return reduced
 
-def reduced_data(data):
+def reduced_data(data, n_components=3):
     pca = decomposition.PCA()
     pca.fit(data.ix[:,'Pclass':])
     result =  pca.explained_variance_
-    pca.n_components = 3
+    pca.n_components = n_components
     reduced = pca.fit_transform(data.ix[:,'Pclass':])
     return reduced
 
