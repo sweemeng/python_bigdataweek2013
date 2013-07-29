@@ -21,5 +21,10 @@ def clean_data(data_frame):
 
     return data_frame
 
+def write_data(series):
+    testing = pandas.DataFrame.from_csv("data/test.csv", index_col="PassengerId", parse_dates=False)
+    temp = pandas.DataFrame({"Survived":pandas.Series(series, index=testing.index)})
+    temp.to_csv("result.csv")
+
 training = clean_data(training)
 testing = clean_data(testing)
